@@ -62,3 +62,7 @@ configure_file("${CMAKE_SOURCE_DIR}/cmake/template/${PROJECT_NAME}ConfigUninstal
 # Add uninstall rule.
 add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P
                   "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigUninstall.cmake")
+
+# Configure desktop shortcut.
+configure_file("${CMAKE_SOURCE_DIR}/cmake/template/asibot-apps.desktop.in"
+               "${CMAKE_BINARY_DIR}/asibot-apps.desktop" @ONLY)
