@@ -33,21 +33,21 @@ else()
     set(${PROJECT_NAME}_CMAKE_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
 endif()
 
-set(${PROJECT_NAME}_CONTEXTS_INSTALL_DIR "${ASIBOT_CONTEXTS_INSTALL_DIR}")
+set(${PROJECT_NAME}_DATA_INSTALL_DIR "${ASIBOT_DATA_INSTALL_DIR}")
 
 # Configure <project>Config.cmake file (build tree).
 configure_package_config_file("${CMAKE_SOURCE_DIR}/cmake/template/${PROJECT_NAME}Config.cmake.in"
                               "${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
                               INSTALL_DESTINATION "${CMAKE_BINARY_DIR}"
                               INSTALL_PREFIX "${CMAKE_BINARY_DIR}"
-                              PATH_VARS ${PROJECT_NAME}_CONTEXTS_INSTALL_DIR
+                              PATH_VARS ${PROJECT_NAME}_DATA_INSTALL_DIR
                               NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 
 # Configure <project>Config.cmake file (install tree).
 configure_package_config_file("${CMAKE_SOURCE_DIR}/cmake/template/${PROJECT_NAME}Config.cmake.in"
                               "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigForInstall.cmake"
                               INSTALL_DESTINATION "${${PROJECT_NAME}_CMAKE_DESTINATION}"
-                              PATH_VARS ${PROJECT_NAME}_CONTEXTS_INSTALL_DIR
+                              PATH_VARS ${PROJECT_NAME}_DATA_INSTALL_DIR
                               NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 
 # Rename and install <project>Config.cmake file (install tree).
