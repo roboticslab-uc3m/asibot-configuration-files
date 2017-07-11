@@ -65,4 +65,11 @@ add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P
 
 # Configure desktop shortcut.
 configure_file("${CMAKE_SOURCE_DIR}/cmake/template/asibot-apps.desktop.in"
-               "${CMAKE_BINARY_DIR}/asibot-apps.desktop" @ONLY)
+               "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/asibot-apps.desktop" @ONLY)
+
+# Set execute permissions on shortcut.
+file(COPY "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/asibot-apps.desktop"
+     DESTINATION "${CMAKE_BINARY_DIR}"
+     FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+                      GROUP_READ GROUP_WRITE GROUP_EXECUTE
+                      WORLD_READ WORLD_EXECUTE)
