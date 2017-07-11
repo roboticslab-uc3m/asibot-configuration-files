@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=ASIBOT Apps yarpmanager
+Type=Application
+MimeType=application/vnd.ms-htmlhelp;
+Exec=yarpmanager
+NoDisplay=true
+StartupNotify=true
+Path=@CMAKE_INSTALL_PREFIX@/@ASIBOT_APPLICATIONS_INSTALL_DIR@
