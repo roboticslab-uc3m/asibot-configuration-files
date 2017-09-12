@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=ASIBOT Apps yarpmanager
+Type=Application
+MimeType=application/vnd.ms-htmlhelp;
+Exec=yarpmanager
+NoDisplay=true
+StartupNotify=true
+Path=/usr/local/share/asibot/applications
+Name[en_US]=ASIBOT Apps yarpmanager

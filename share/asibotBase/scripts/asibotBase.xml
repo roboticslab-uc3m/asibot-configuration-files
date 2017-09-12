@@ -1,0 +1,36 @@
+<application>
+    <name>asibotBase App</name>
+
+    <module>
+        <name>oneCanBusOneWrapper</name>
+        <parameters></parameters>
+        <node>/asibot</node>
+    </module>
+
+    <module>
+        <name>BasicCartesianControl</name>
+        <parameters>--name /asibot/CartesianControl --from /usr/local/share/asibot/contexts/kinematics/armKinematics.ini --angleRepr eulerYZ --robot remote_controlboard --local /BasicCartesianControl/asibot --remote /canbot</parameters>
+        <node>localhost</node>
+        <deployer>yarpdev</deployer>
+    </module>
+
+    <module>
+        <name>BasicCartesianControl</name>
+        <parameters>--name /asibot/CartesianControl --solver AsibotSolver --angleRepr eulerYZ --robot remote_controlboard --local /BasicCartesianControl/asibot --remote /canbot</parameters>
+        <node>localhost</node>
+        <deployer>yarpdev</deployer>
+    </module>
+
+    <module>
+        <name>gnome-terminal</name>
+        <parameters>-e "yarp rpc /canbot/rpc:i"</parameters>
+        <node>localhost</node>
+    </module>
+
+    <module>
+        <name>gnome-terminal</name>
+        <parameters>-e "yarp rpc /asibot/CartesianControl/rpc_transform:s"</parameters>
+        <node>localhost</node>
+    </module>
+
+</application>
