@@ -1,0 +1,62 @@
+<application>
+    <name>asibotTools App</name>
+
+    <!-- JOINT -->
+    <module>
+        <name>gnome-terminal</name>
+        <parameters>-e "yarp rpc /asibot/asibotManipulator/rpc:i"</parameters>
+        <node>localhost</node>
+    </module>
+
+    <module>
+        <name>gnome-terminal</name>
+        <parameters>-e "yarp rpc /canbot/rpc:i"</parameters>
+        <node>localhost</node>
+    </module>
+
+    <!-- CARTESIAN -->
+    <module>
+        <name>gnome-terminal</name>
+        <parameters>-e "yarp rpc /asibot/CartesianControl/rpc_transform:s"</parameters>
+        <node>localhost</node>
+    </module>
+
+    <module>
+        <name>gnome-terminal</name>
+        <parameters>-e "yarp rpc /asibotSim/CartesianControl/rpc_transform:s"</parameters>
+        <node>localhost</node>
+    </module>
+
+    <!-- MOTORS -->
+    <module>
+        <name>yarpmotorgui</name>
+        <parameters>--from yarpmotorgui/asibot-yarpmotorgui.ini</parameters>
+    </module>
+
+    <!-- CONTROLLERS -->
+    <module>
+        <name>gnome-terminal</name>
+        <parameters>-e "keyboardController --remoteCartesian /asibot/CartesianControl"</parameters>
+    </module>
+
+    <module>
+        <name>gnome-terminal</name>
+        <parameters>-e "keyboardController --remoteCartesian /asibotSim/CartesianControl"</parameters>
+    </module>
+
+    <module>
+        <name>streamingDeviceController</name>
+        <parameters>--streamingDevice SpaceNavigator --remoteCartesian /asibotSim/CartesianControl --SpaceNavigator::remote /spacenavigator</parameters>
+    </module>
+
+    <module>
+        <name>streamingDeviceController</name>
+        <parameters>--streamingDevice WiimoteSensor --remoteCartesian /asibotSim/CartesianControl --WiimoteSensor::remote /wiimote</parameters>
+    </module>
+
+    <module>
+        <name>streamingDeviceController</name>
+        <parameters>--streamingDevice LeapMotionSensor --remoteCartesian /asibotSim/CartesianControl --LeapMotionSensor::remote /leap</parameters>
+    </module>
+
+</application>
