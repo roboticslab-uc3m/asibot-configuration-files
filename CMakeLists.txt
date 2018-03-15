@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 2.8.9)
 # Define a project.
 project(ASIBOT_CONFIGURATION_FILES)
 
+# Load custom CMake modules.
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
 # Find YARP and load configuration, fail otherwise.
 find_package(YARP REQUIRED)
 
@@ -21,44 +24,20 @@ add_subdirectory(share)
 # Store this package in the user registry.
 export(PACKAGE ${PROJECT_NAME})
 
-# Load configure_package_config_file().
-include(CMakePackageConfigHelpers)
-
 # Define CMAKE_INSTALL_<dir> and CMAKE_INSTALL_FULL_<dir> variables.
 include(GNUInstallDirs)
 
+# Set installation path for CMake files.
 if(WIN32)
-    set(${PROJECT_NAME}_CMAKE_DESTINATION "cmake")
+    set(${PROJECT_NAME}_CMAKE_DESTINATION CMake)
 else()
-    set(${PROJECT_NAME}_CMAKE_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+    set(${PROJECT_NAME}_CMAKE_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 endif()
 
-set(${PROJECT_NAME}_CONTEXTS_INSTALL_DIR "${ASIBOT_CONTEXTS_INSTALL_DIR}")
+file(WRITE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake "# Dummy CMake configuration export file.")
 
-# Configure <project>Config.cmake file (build tree).
-configure_package_config_file("${CMAKE_SOURCE_DIR}/cmake/template/${PROJECT_NAME}Config.cmake.in"
-                              "${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-                              INSTALL_DESTINATION "${CMAKE_BINARY_DIR}"
-                              INSTALL_PREFIX "${CMAKE_BINARY_DIR}"
-                              PATH_VARS ${PROJECT_NAME}_CONTEXTS_INSTALL_DIR
-                              NO_CHECK_REQUIRED_COMPONENTS_MACRO)
-
-# Configure <project>Config.cmake file (install tree).
-configure_package_config_file("${CMAKE_SOURCE_DIR}/cmake/template/${PROJECT_NAME}Config.cmake.in"
-                              "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigForInstall.cmake"
-                              INSTALL_DESTINATION "${${PROJECT_NAME}_CMAKE_DESTINATION}"
-                              PATH_VARS ${PROJECT_NAME}_CONTEXTS_INSTALL_DIR
-                              NO_CHECK_REQUIRED_COMPONENTS_MACRO)
-
-# Rename and install <project>Config.cmake file (install tree).
-install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigForInstall.cmake"
-        RENAME ${PROJECT_NAME}Config.cmake
-        DESTINATION "${${PROJECT_NAME}_CMAKE_DESTINATION}")
-
-# Configure CMake uninstall script.
-configure_file("${CMAKE_SOURCE_DIR}/cmake/template/${PROJECT_NAME}ConfigUninstall.cmake.in"
-               "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigUninstall.cmake" @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        DESTINATION ${PROJECT_NAME}_CMAKE_DESTINATION)
 
 # Add uninstall rule.
-add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P
-                  "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigUninstall.cmake")
+include(AddUninstallTarget)
