@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 2.8.9)
 # Define a project.
 project(ASIBOT_CONFIGURATION_FILES)
 
+# Load custom CMake modules.
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
 # Find YARP and load configuration, fail otherwise.
 find_package(YARP REQUIRED)
 
@@ -36,10 +39,5 @@ file(WRITE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake "# Dummy CMake config
 install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
         DESTINATION ${PROJECT_NAME}_CMAKE_DESTINATION)
 
-# Configure CMake uninstall script.
-configure_file("${CMAKE_SOURCE_DIR}/cmake/template/${PROJECT_NAME}ConfigUninstall.cmake.in"
-               "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigUninstall.cmake" @ONLY)
-
 # Add uninstall rule.
-add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P
-                  "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigUninstall.cmake")
+include(AddUninstallTarget)
