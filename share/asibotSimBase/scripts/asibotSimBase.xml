@@ -1,0 +1,36 @@
+<application>
+    <name>asibotSimBase App</name>
+
+    <module>
+        <name>teoSim</name>
+        <parameters>--env /usr/local/share/asibot/contexts/openrave/models/asibot_kitchen.env.xml</parameters>
+        <node>localhost</node>
+    </module>
+
+    <module>
+        <name>BasicCartesianControl</name>
+        <parameters>--name /asibotSim/CartesianControl --from /usr/local/share/asibot/contexts/kinematics/armKinematics.ini --angleRepr eulerYZ --robot remote_controlboard --local /BasicCartesianControl/asibotSim --remote /asibot/asibotManipulator</parameters>
+        <node>localhost</node>
+        <deployer>yarpdev</deployer>
+    </module>
+
+    <module>
+        <name>BasicCartesianControl</name>
+        <parameters>--name /asibotSim/CartesianControl --solver AsibotSolver --angleRepr eulerYZ --robot remote_controlboard --local /BasicCartesianControl/asibotSim --remote /asibot/asibotManipulator</parameters>
+        <node>localhost</node>
+        <deployer>yarpdev</deployer>
+    </module>
+
+    <module>
+        <name>gnome-terminal</name>
+        <parameters>-e "yarp rpc /asibot/asibotManipulator/rpc:i"</parameters>
+        <node>localhost</node>
+    </module>
+
+    <module>
+        <name>gnome-terminal</name>
+        <parameters>-e "yarp rpc /asibotSim/CartesianControl/rpc_transform:s"</parameters>
+        <node>localhost</node>
+    </module>
+
+</application>
