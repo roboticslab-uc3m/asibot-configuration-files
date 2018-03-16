@@ -37,7 +37,7 @@ endif()
 file(WRITE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake "# Dummy CMake configuration export file.")
 
 install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-        DESTINATION ${PROJECT_NAME}_CMAKE_DESTINATION)
+        DESTINATION ${${PROJECT_NAME}_CMAKE_DESTINATION})
 
 # Configure desktop shortcut.
 configure_file("${CMAKE_SOURCE_DIR}/cmake/templates/asibot-apps.desktop.in"
