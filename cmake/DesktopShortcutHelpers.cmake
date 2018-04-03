@@ -2,22 +2,41 @@ if(COMMAND configure_desktop_shortcut)
     return()
 endif()
 
+include(CMakeParseArguments)
+
 function(configure_desktop_shortcut)
-    if(NOT ${ARGC} EQUAL 1)
-        message(SEND_ERROR "Invalid arguments to configure_desktop_shortcut() (expected: 1, got: ${ARGC}).")
-        return()
-    endif()
+    set(options NO_EXTENSION)
+    set(oneValueArgs EXTENSION)
+    set(multiValueArgs)
+
+    cmake_parse_arguments(_IDS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     set(_arg ${ARGV0})
 
+    if("${_arg}" STREQUAL "")
+        message(SEND_ERROR "Missing argument to configure_desktop_shortcut().")
+        return()
+    endif()
+
     get_filename_component(_template_name ${_arg} NAME)
 
-    string(REGEX REPLACE "\\.in$" "" _filename ${_template_name})
+    set(_filename ${_template_name})
+
+    if(NOT _IDS_NO_EXTENSION)
+        set(_extension .in)
+
+        if(_IDS_EXTENSION)
+            set(_extension ${_IDS_EXTENSION})
+        endif()
+
+        string(REPLACE "." "\\." _extension_escaped ${_extension})
+        string(REGEX REPLACE "${_extension_escaped}$" "" _filename ${_template_name})
+    endif()
 
     string(REGEX MATCH ".+\\.desktop$" _valid_filename ${_filename})
 
     if(NOT _valid_filename)
-        message(SEND_ERROR "Invalid desktop file: ${_filename}.")
+        message(SEND_ERROR "Invalid desktop file: \"${_filename}\".")
         return()
     endif()
 
