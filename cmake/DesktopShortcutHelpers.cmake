@@ -1,25 +1,32 @@
-if(COMMAND configure_and_install_desktop_shortcut)
+if(COMMAND configure_desktop_shortcut)
     return()
 endif()
 
-include(CMakeParseArguments)
+function(configure_desktop_shortcut)
+    if(NOT ${ARGC} EQUAL 1)
+        message(SEND_ERROR "Invalid arguments to configure_desktop_shortcut() (expected: 1, got: ${ARGC}).")
+        return()
+    endif()
 
-function(configure_and_install_desktop_shortcut _source _dest)
-    set(options)
-    set(oneValueArgs)
-    set(multiValueArgs)
+    set(_arg ${ARGV0})
 
-    cmake_parse_arguments(_IDS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    get_filename_component(_template_name ${_arg} NAME)
 
-    get_filename_component(_template ${_dest} NAME)
-    get_filename_component(_dest_dir ${_dest} DIRECTORY)
+    string(REGEX REPLACE "\\.in$" "" _filename ${_template_name})
+
+    string(REGEX MATCH ".+\\.desktop$" _valid_filename ${_filename})
+
+    if(NOT _valid_filename)
+        message(SEND_ERROR "Invalid desktop file: ${_filename}.")
+        return()
+    endif()
 
     # Configure desktop shortcut.
-    configure_file(${_source} ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_template} @ONLY)
+    configure_file(${_arg} ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_filename} @ONLY)
 
     # Set execute permissions on shortcut.
-    file(COPY ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_template}
-         DESTINATION ${_dest_dir}
+    file(COPY ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_filename}
+         DESTINATION ${CMAKE_BINARY_DIR}
          FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
                           GROUP_READ GROUP_WRITE GROUP_EXECUTE
                           WORLD_READ WORLD_EXECUTE)
@@ -55,7 +62,7 @@ function(configure_and_install_desktop_shortcut _source _dest)
     if(_desktop_install_path)
         message(STATUS "Installation path of desktop shortcut: ${_desktop_install_path}.")
 
-        install(PROGRAMS ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_template}
+        install(PROGRAMS ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_filename}
                 DESTINATION "${_desktop_install_path}")
     else()
         message(STATUS "Not installing desktop shortcut.")
