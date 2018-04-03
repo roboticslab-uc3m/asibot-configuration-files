@@ -39,16 +39,13 @@ file(WRITE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake "# Dummy CMake config
 install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
         DESTINATION ${${PROJECT_NAME}_CMAKE_DESTINATION})
 
-# Configure desktop shortcut.
-configure_file("${CMAKE_SOURCE_DIR}/cmake/templates/asibot-apps.desktop.in"
-               "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/asibot-apps.desktop" @ONLY)
+# Configure and install desktop shortcut.
+if(UNIX)
+    include(DesktopShortcutHelpers)
 
-# Set execute permissions on shortcut.
-file(COPY "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/asibot-apps.desktop"
-     DESTINATION "${CMAKE_BINARY_DIR}"
-     FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
-                      GROUP_READ GROUP_WRITE GROUP_EXECUTE
-                      WORLD_READ WORLD_EXECUTE)
+    configure_and_install_desktop_shortcut(${CMAKE_SOURCE_DIR}/cmake/templates/asibot-apps.desktop.in
+                                           ${CMAKE_BINARY_DIR}/asibot-apps.desktop @ONLY)
+endif()
 
 # Add uninstall rule.
 include(AddUninstallTarget)
