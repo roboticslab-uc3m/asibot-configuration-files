@@ -42,7 +42,7 @@ install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
 # Configure and install desktop shortcut.
 if(UNIX)
     include(DesktopShortcutHelpers)
-    configure_desktop_shortcut(${CMAKE_SOURCE_DIR}/cmake/templates/asibot-apps.desktop.in)
+    configure_and_install_desktop_shortcut(${CMAKE_SOURCE_DIR}/cmake/templates/asibot-apps.desktop.in)
 endif()
 
 # Add uninstall rule.

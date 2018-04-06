@@ -1,16 +1,8 @@
-if(COMMAND configure_desktop_shortcut)
+if(COMMAND configure_and_install_desktop_shortcut)
     return()
 endif()
 
-include(CMakeParseArguments)
-
-function(configure_desktop_shortcut)
-    set(options NO_EXTENSION)
-    set(oneValueArgs EXTENSION)
-    set(multiValueArgs)
-
-    cmake_parse_arguments(_IDS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-
+function(configure_and_install_desktop_shortcut)
     set(_arg ${ARGV0})
 
     if("${_arg}" STREQUAL "")
@@ -18,21 +10,9 @@ function(configure_desktop_shortcut)
         return()
     endif()
 
+    # Retrieve and sanitize file name of provided template.
     get_filename_component(_template_name ${_arg} NAME)
-
-    set(_filename ${_template_name})
-
-    if(NOT _IDS_NO_EXTENSION)
-        set(_extension .in)
-
-        if(_IDS_EXTENSION)
-            set(_extension ${_IDS_EXTENSION})
-        endif()
-
-        string(REPLACE "." "\\." _extension_escaped ${_extension})
-        string(REGEX REPLACE "${_extension_escaped}$" "" _filename ${_template_name})
-    endif()
-
+    string(REGEX REPLACE "\\.in$" "" _filename ${_template_name})
     string(REGEX MATCH ".+\\.desktop$" _valid_filename ${_filename})
 
     if(NOT _valid_filename)
@@ -57,24 +37,13 @@ function(configure_desktop_shortcut)
     # Retrieve desktop location via xdg-user-dir or env variable.
     if(XdgUserDir_EXECUTABLE)
         execute_process(COMMAND ${XdgUserDir_EXECUTABLE} DESKTOP
-                        RESULT_VARIABLE _result
                         OUTPUT_VARIABLE _output
-                        ERROR_VARIABLE _error
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-        if(NOT _result)
-            set(_desktop_install_path "${_output}")
-        else()
-            message(WARNING "xdg-user-dir reports failure: ${_error}")
-        endif()
+        set(_desktop_install_path "${_output}")
     else()
-        message(STATUS "xdg-user-dir not found.")
-
-        if(NOT $ENV{HOME} STREQUAL "")
-            set(_desktop_install_path "$ENV{HOME}")
-        else()
-            message(STATUS "$HOME env var not found.")
-        endif()
+        message(STATUS "xdg-user-dir not found, using $HOME environment variable.")
+        set(_desktop_install_path "$ENV{HOME}")
     endif()
 
     # Install desktop shortcut.
