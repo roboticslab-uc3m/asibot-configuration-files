@@ -20,10 +20,15 @@ function(configure_and_install_desktop_shortcut)
         return()
     endif()
 
-    # Configure desktop shortcut.
-    configure_file(${_arg} ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_filename} @ONLY)
+    # Configure desktop shortcut (build tree).
+    set(DESKTOP_SHORTCUT_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+    configure_file(${_arg} ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_filename})
 
-    # Set execute permissions on shortcut.
+    # Configure desktop shortcut (install tree).
+    set(DESKTOP_SHORTCUT_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+    configure_file(${_arg} ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_filename}.install)
+
+    # Set execute permissions on shortcut (build tree).
     file(COPY ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_filename}
          DESTINATION ${CMAKE_BINARY_DIR}
          FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
@@ -50,8 +55,9 @@ function(configure_and_install_desktop_shortcut)
     if(_desktop_install_path)
         message(STATUS "Installation path of desktop shortcut: ${_desktop_install_path}.")
 
-        install(PROGRAMS ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_filename}
-                DESTINATION "${_desktop_install_path}")
+        install(PROGRAMS ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${_filename}.install
+                DESTINATION "${_desktop_install_path}"
+                RENAME ${_filename})
     else()
         message(STATUS "Not installing desktop shortcut.")
     endif()
