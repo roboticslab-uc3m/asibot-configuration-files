@@ -5,4 +5,4 @@ MimeType=application/vnd.ms-htmlhelp;
 Exec=yarpmanager
 NoDisplay=true
 StartupNotify=true
-Path=@CMAKE_INSTALL_PREFIX@/@ASIBOT_APPLICATIONS_INSTALL_DIR@
+Path=${DESKTOP_SHORTCUT_INSTALL_PREFIX}/${ASIBOT_APPLICATIONS_INSTALL_DIR}
