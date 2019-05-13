@@ -7,7 +7,7 @@ project(ASIBOT_CONFIGURATION_FILES LANGUAGES NONE)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Find dependencies
-find_package(YCM 0.8 REQUIRED)
+find_package(YCM 0.10 REQUIRED)
 find_package(YARP 3.0 REQUIRED)
 
 # Set some useful variables - paths relative to the installation prefix.
