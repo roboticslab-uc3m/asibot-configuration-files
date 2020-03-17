@@ -1,6 +1,11 @@
-yarp_install(DIRECTORY applications/yarpmanager
-                       applications/yarpmotorgui
+yarp_install(FILES applications/ymanager.ini
+                   applications/asibotBase.xml
+                   applications/asibotSimBase.xml
+                   applications/asibotTools.xml
              DESTINATION ${ASIBOT-CONFIGURATION-FILES_APPLICATIONS_INSTALL_DIR})
+
+yarp_install(DIRECTORY yarpmotorgui
+             DESTINATION ${ASIBOT-CONFIGURATION-FILES_DATA_INSTALL_DIR})
 
 yarp_install(DIRECTORY contexts/kinematics
                        contexts/launchCanBus
