@@ -1,6 +1,4 @@
-if(COMMAND configure_and_install_desktop_shortcut)
-    return()
-endif()
+include_guard(GLOBAL)
 
 function(configure_and_install_desktop_shortcut)
     set(_arg ${ARGV0})

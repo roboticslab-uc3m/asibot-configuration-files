@@ -9,7 +9,7 @@
 
     <module>
         <name>BasicCartesianControl</name>
-        <parameters>--name /asibotSim/CartesianControl --from /usr/local/share/asibot/contexts/kinematics/armKinematics.ini --angleRepr eulerYZ --robot remote_controlboard --local /BasicCartesianControl/asibotSim --remote /asibot/asibotManipulator</parameters>
+        <parameters>--name /asibotSim/CartesianControl --kinematics asibot-armKinematics.ini --angleRepr eulerYZ --robot remote_controlboard --local /BasicCartesianControl/asibotSim --remote /asibot/asibotManipulator</parameters>
         <node>localhost</node>
         <deployer>yarpdev</deployer>
     </module>
