@@ -8,4 +8,4 @@
 # - https://github.com/roboticslab-uc3m/asibot-openrave-models  (provides asibot.robot.xml)
 # - https://github.com/roboticslab-uc3m/openrave-yarp-plugins  (provides OpenraveYarpPluginLoader)
 
-openrave /usr/local/share/asibot-openrave-models/openrave/models/asibot.robot.xml --module OpenraveYarpPluginLoader "open --device controlboardwrapper2 --subdevice YarpOpenraveControlboard --robotIndex 0 --allManipulators"
+openrave /usr/local/share/asibot-openrave-models/openrave/models/asibot.robot.xml --module OpenraveYarpPluginLoader "open --device controlBoard_nws_yarp --subdevice YarpOpenraveControlboard --robotIndex 0 --allManipulators"
