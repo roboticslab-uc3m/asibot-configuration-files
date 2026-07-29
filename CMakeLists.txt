@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.19)
 
 # Define a project.
 project(ASIBOT_CONFIGURATION_FILES LANGUAGES NONE)
@@ -8,7 +8,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Find dependencies
 find_package(YCM 0.11 REQUIRED)
-find_package(YARP 3.2 REQUIRED)
+find_package(YARP 3.11 REQUIRED)
 
 # Set some useful variables - paths relative to the installation prefix.
 yarp_configure_external_installation(asibot-configuration-files)
